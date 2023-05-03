@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:lottie/lottie.dart';
 
 class ConnetionNotifier extends InheritedNotifier<ValueNotifier<bool>> {
   const ConnetionNotifier({
@@ -73,7 +74,7 @@ class _AppState extends State<App> {
       title: titulo,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        brightness: Brightness.dark,
+        brightness: Brightness.light,
         primarySwatch: Colors.blue,
       ),
       home: const Home(),
@@ -87,10 +88,10 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasConnetion = ConnetionNotifier.of(context).value;
-
+    var tamanhoFonte = Theme.of(context).textTheme.headlineSmall!.fontSize;
     return Scaffold(
       appBar: AppBar(
-        title: Text(titulo),
+        title: const Text(titulo),
         actions: [
           Padding(
             padding: const EdgeInsets.only(
@@ -100,8 +101,23 @@ class Home extends StatelessWidget {
           ),
         ],
       ),
-      body: const Center(
-        child: Text('Verifica conexão com internet'),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Conexão com internet ${hasConnetion ? 'ativa' : 'inativa'}',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: tamanhoFonte),
+            ),
+            Lottie.network(
+              hasConnetion
+                  ? 'https://assets5.lottiefiles.com/packages/lf20_pmqt2q8c.json'
+                  : 'https://assets5.lottiefiles.com/private_files/lf30_kz1dg5wp.json',
+              width: MediaQuery.of(context).size.width * .6,
+            ),
+          ],
+        ),
         //Text(' Possui internet ${hasConnetion ? 'sim' : 'nao'}'),
       ),
     );
